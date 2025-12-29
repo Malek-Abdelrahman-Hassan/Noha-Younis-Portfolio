@@ -565,7 +565,7 @@
                 </div>
                 
                 <div class="contact-form-container">
-                    <form class="contact-form" id="contact-form">
+                    <form class="contact-form" id="contact-form" action="https://formspree.io/f/xwpkgkrd" method="POST">
                         <h3>اطلب عرض سعر</h3>
                         <div class="form-group">
                             <input type="text" id="name" name="name" required placeholder=" ">
@@ -578,19 +578,23 @@
                         <div class="form-group">
                             <select id="project-type" name="project-type" required>
                                 <option value="" disabled selected>اختر نوع المشروع</option>
-                                <option value="commercial">إعلان تلفزيوني/راديو</option>
-                                <option value="audiobook">كتاب صوتي</option>
-                                <option value="ivr">نظام رد آلي IVR</option>
-                                <option value="dubbing">دبلجة</option>
-                                <option value="elearning">تعليم إلكتروني</option>
-                                <option value="corporate">فيديو مؤسسي</option>
-                                <option value="other">أخرى</option>
+                                <option value="إعلان تلفزيوني/راديو">إعلان تلفزيوني/راديو</option>
+                                <option value="كتاب صوتي">كتاب صوتي</option>
+                                <option value="نظام رد آلي IVR">نظام رد آلي IVR</option>
+                                <option value="دبلجة">دبلجة</option>
+                                <option value="تعليم إلكتروني">تعليم إلكتروني</option>
+                                <option value="فيديو مؤسسي">فيديو مؤسسي</option>
+                                <option value="أخرى">أخرى</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <textarea id="message" name="message" rows="4" required placeholder=" "></textarea>
                             <label for="message">تفاصيل المشروع</label>
                         </div>
+                        <!-- Honeypot field for spam protection -->
+                        <input type="text" name="_gotcha" style="display:none">
+                        <!-- Subject line for email -->
+                        <input type="hidden" name="_subject" value="طلب عرض سعر جديد من موقع نهى يونس">
                         <button type="submit" class="btn btn-primary btn-full">
                             <i class="fas fa-paper-plane"></i>
                             إرسال الرسالة

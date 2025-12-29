@@ -289,14 +289,16 @@ function initScrollAnimations() {
 }
 
 // ===================================
-// Contact Form
+// Contact Form - Formspree Integration
 // ===================================
 function initContactForm() {
     const form = document.getElementById('contact-form');
     
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const isArabic = document.documentElement.lang === 'ar';
             
             // Get form data
             const formData = new FormData(form);
@@ -304,7 +306,6 @@ function initContactForm() {
             
             // Validate form
             if (!data.name || !data.email || !data.message) {
-                const isArabic = document.documentElement.lang === 'ar';
                 showNotification(
                     isArabic ? 'يرجى ملء جميع الحقول المطلوبة.' : 'Please fill in all required fields.',
                     'error'
@@ -315,7 +316,6 @@ function initContactForm() {
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(data.email)) {
-                const isArabic = document.documentElement.lang === 'ar';
                 showNotification(
                     isArabic ? 'يرجى إدخال بريد إلكتروني صحيح.' : 'Please enter a valid email address.',
                     'error'
@@ -323,30 +323,51 @@ function initContactForm() {
                 return;
             }
             
-            // Simulate form submission (replace with actual backend integration)
+            // Show loading state
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
-            const isArabic = document.documentElement.lang === 'ar';
             submitBtn.innerHTML = isArabic 
                 ? '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...'
                 : '<i class="fas fa-spinner fa-spin"></i> Sending...';
             submitBtn.disabled = true;
             
-            // Create mailto link with form data
-            const subject = encodeURIComponent(`Voice Over Project Inquiry - ${data['project-type'] || 'General'}`);
-            const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\nProject Type: ${data['project-type'] || 'Not specified'}\n\nMessage:\n${data.message}`);
-            
-            // Simulate API call then open mail client
-            setTimeout(function() {
-                window.location.href = `mailto:nohayounis1681@gmail.com?subject=${subject}&body=${body}`;
+            try {
+                // Submit to Formspree via AJAX
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Success!
+                    showNotification(
+                        isArabic 
+                            ? 'شكراً لك! تم إرسال رسالتك بنجاح. سأتواصل معك قريباً.' 
+                            : 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.',
+                        'success'
+                    );
+                    form.reset();
+                } else {
+                    // Server error
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Form submission failed');
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
                 showNotification(
-                    isArabic ? 'شكراً! سيتم فتح برنامج البريد الإلكتروني.' : 'Thank you! Your email client will open.',
-                    'success'
+                    isArabic 
+                        ? 'عذراً، حدث خطأ. يرجى المحاولة مرة أخرى أو التواصل عبر البريد الإلكتروني مباشرة.'
+                        : 'Sorry, something went wrong. Please try again or contact via email directly.',
+                    'error'
                 );
-                form.reset();
+            } finally {
+                // Reset button state
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }, 1000);
+            }
         });
     }
 }
