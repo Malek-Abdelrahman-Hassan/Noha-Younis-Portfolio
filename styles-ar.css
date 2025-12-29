@@ -204,18 +204,11 @@ body.rtl {
     margin-right: auto;
 }
 
-/* Mobile Menu RTL */
-@media (max-width: 768px) {
-    .rtl .mobile-menu-btn {
-        order: -1;
-    }
-    
-    .rtl .nav-links.active {
-        text-align: right;
-    }
-}
+/* ===================================
+   RTL Mobile Responsive Styles
+   =================================== */
 
-/* Responsive Adjustments */
+/* Tablet RTL */
 @media (max-width: 1024px) {
     .rtl .hero-content {
         text-align: center;
@@ -234,6 +227,102 @@ body.rtl {
         left: 50%;
         right: auto;
         transform: translateX(-50%);
+    }
+    
+    .rtl .section-header {
+        text-align: center;
+    }
+}
+
+/* Mobile RTL */
+@media (max-width: 768px) {
+    .rtl .mobile-menu-btn {
+        order: -1;
+    }
+    
+    .rtl .nav-links.active {
+        text-align: right;
+    }
+    
+    .rtl .nav-links.active .nav-link {
+        text-align: right;
+    }
+    
+    /* Language Toggle RTL Mobile */
+    .rtl .language-toggle {
+        right: auto;
+        left: 65px;
+    }
+    
+    /* Demo Cards RTL Mobile */
+    .rtl .demo-card {
+        flex-direction: row-reverse;
+        text-align: right;
+    }
+    
+    .rtl .demo-header {
+        align-items: flex-end;
+    }
+    
+    /* Contact RTL Mobile */
+    .rtl .contact-item {
+        flex-direction: row-reverse;
+    }
+    
+    .rtl .contact-icon {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .rtl .social-links {
+        justify-content: center;
+    }
+    
+    /* Footer RTL Mobile */
+    .rtl .footer-content {
+        text-align: center;
+    }
+    
+    .rtl .footer-brand,
+    .rtl .footer-links,
+    .rtl .footer-services {
+        text-align: center;
+    }
+}
+
+/* Small Mobile RTL */
+@media (max-width: 480px) {
+    .rtl .demo-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .rtl .demo-header {
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .rtl .skill-item {
+        flex-direction: row-reverse;
+        justify-content: center;
+    }
+    
+    .rtl .language-toggle {
+        left: 60px;
+    }
+    
+    .rtl .studio-feature {
+        flex-direction: row-reverse;
+        justify-content: center;
+    }
+}
+
+/* Touch Device RTL */
+@media (hover: none) and (pointer: coarse) {
+    .rtl .demo-card:hover,
+    .rtl .service-card:hover,
+    .rtl .studio-feature:hover {
+        transform: none;
     }
 }
 
