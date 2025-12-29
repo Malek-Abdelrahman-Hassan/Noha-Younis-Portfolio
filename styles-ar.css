@@ -1,0 +1,239 @@
+/* ===================================
+   Noha Younis - Voice Over Portfolio
+   Arabic RTL Styles
+   =================================== */
+
+/* RTL Base Styles */
+body.rtl {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Cairo', 'Amiri', var(--font-body), sans-serif;
+}
+
+.rtl h1, 
+.rtl h2, 
+.rtl h3, 
+.rtl h4, 
+.rtl h5, 
+.rtl h6 {
+    font-family: 'Cairo', 'Amiri', var(--font-heading), serif;
+}
+
+/* Navigation RTL */
+.rtl .nav-container {
+    flex-direction: row-reverse;
+}
+
+.rtl .nav-links {
+    flex-direction: row-reverse;
+}
+
+.rtl .nav-link::after {
+    left: auto;
+    right: 0;
+}
+
+/* Hero RTL */
+.rtl .hero-content {
+    direction: rtl;
+}
+
+.rtl .hero-text {
+    text-align: right;
+}
+
+.rtl .hero-cta {
+    justify-content: flex-start;
+}
+
+.rtl .btn i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* Demo Cards RTL */
+.rtl .demo-card {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.rtl .demo-header {
+    flex-direction: row-reverse;
+}
+
+.rtl .audio-player {
+    flex-direction: row-reverse;
+}
+
+.rtl .play-btn i {
+    margin-left: 0;
+    margin-right: 2px;
+}
+
+.rtl .script-toggle i {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* About RTL */
+.rtl .about-grid {
+    direction: rtl;
+}
+
+.rtl .about-content {
+    text-align: right;
+}
+
+.rtl .experience-badge {
+    left: -20px;
+    right: auto;
+}
+
+.rtl .skill-item {
+    flex-direction: row-reverse;
+}
+
+.rtl .skill-item i {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* Services RTL */
+.rtl .service-card {
+    text-align: right;
+}
+
+/* Studio RTL */
+.rtl .studio-grid {
+    direction: rtl;
+}
+
+.rtl .studio-feature {
+    flex-direction: row-reverse;
+}
+
+.rtl .studio-feature i {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+.rtl .studio-badge {
+    left: -20px;
+    right: auto;
+}
+
+/* Contact RTL */
+.rtl .contact-grid {
+    direction: rtl;
+}
+
+.rtl .contact-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.rtl .contact-item div {
+    text-align: right;
+}
+
+.rtl .contact-icon {
+    margin-left: 20px;
+    margin-right: 0;
+}
+
+.rtl .social-links {
+    justify-content: flex-start;
+}
+
+/* Form RTL */
+.rtl .form-group label {
+    left: auto;
+    right: 20px;
+}
+
+.rtl .form-group input:focus ~ label,
+.rtl .form-group input:not(:placeholder-shown) ~ label,
+.rtl .form-group textarea:focus ~ label,
+.rtl .form-group textarea:not(:placeholder-shown) ~ label {
+    left: auto;
+    right: 15px;
+}
+
+.rtl .form-group select {
+    text-align: right;
+}
+
+/* Footer RTL */
+.rtl .footer-content {
+    direction: rtl;
+}
+
+.rtl .footer-brand,
+.rtl .footer-links,
+.rtl .footer-services {
+    text-align: right;
+}
+
+.rtl .footer-links ul,
+.rtl .footer-services ul {
+    text-align: right;
+}
+
+/* Language Toggle - Always LTR positioned */
+.language-toggle {
+    position: fixed;
+    top: 25px;
+    left: 20px;
+    z-index: 1001;
+    display: flex;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+.rtl .language-toggle {
+    left: auto;
+    right: 20px;
+}
+
+/* Demo Lang Badge RTL */
+.rtl .demo-lang-badge {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* Mobile Menu RTL */
+@media (max-width: 768px) {
+    .rtl .mobile-menu-btn {
+        order: -1;
+    }
+    
+    .rtl .nav-links.active {
+        text-align: right;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .rtl .hero-content {
+        text-align: center;
+    }
+    
+    .rtl .hero-cta {
+        justify-content: center;
+    }
+    
+    .rtl .about-content,
+    .rtl .studio-content {
+        text-align: center;
+    }
+    
+    .rtl .experience-badge {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+}
+
