@@ -1,0 +1,27 @@
+To ensure our service quality, kindly note that this call might be recorded
+
+There will be a short survey after the end of this call to improve our services
+
+For residential, press 1
+
+For commercial or administrative properties, press 2
+
+For re-sale, press 3
+
+For any other inquiries, press 4
+
+For complaints, press 5
+
+To repeat these options, press star
+
+In case none of the options were selected:
+
+We haven't received any feedback from you
+
+And all the options will be repeated
+
+** In case the agents are busy:
+
+All our customer service representatives are busy assisting other customers.
+
+Please hold on and we will answer your call shortly.
