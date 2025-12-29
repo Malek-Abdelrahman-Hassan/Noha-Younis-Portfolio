@@ -13,7 +13,37 @@ document.addEventListener('DOMContentLoaded', function() {
     initContactForm();
     initDemoFilters();
     initScriptToggles();
+    checkFormSuccess();
 });
+
+// ===================================
+// Check for Form Submission Success (redirect fallback)
+// ===================================
+function checkFormSuccess() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+        const isArabic = document.documentElement.lang === 'ar';
+        
+        // Show success message
+        setTimeout(() => {
+            showNotification(
+                isArabic 
+                    ? 'شكراً لك! تم إرسال رسالتك بنجاح. سأتواصل معك قريباً.' 
+                    : 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.',
+                'success'
+            );
+        }, 500);
+        
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Scroll to contact section
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+}
 
 // ===================================
 // Navbar Scroll Effect
@@ -341,7 +371,9 @@ function initContactForm() {
                     }
                 });
                 
-                if (response.ok) {
+                const result = await response.json();
+                
+                if (response.ok && result.ok) {
                     // Success!
                     showNotification(
                         isArabic 
@@ -350,13 +382,26 @@ function initContactForm() {
                         'success'
                     );
                     form.reset();
+                    // Reset select to default
+                    const select = form.querySelector('select');
+                    if (select) select.selectedIndex = 0;
+                } else if (result.errors) {
+                    // Formspree validation errors
+                    const errorMsg = result.errors.map(err => err.message).join(', ');
+                    throw new Error(errorMsg);
                 } else {
-                    // Server error
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Form submission failed');
+                    throw new Error('Form submission failed');
                 }
             } catch (error) {
                 console.error('Form submission error:', error);
+                
+                // Check if it's a network/CORS error (likely testing locally)
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    // Fallback: submit form normally (will redirect)
+                    form.submit();
+                    return;
+                }
+                
                 showNotification(
                     isArabic 
                         ? 'عذراً، حدث خطأ. يرجى المحاولة مرة أخرى أو التواصل عبر البريد الإلكتروني مباشرة.'
