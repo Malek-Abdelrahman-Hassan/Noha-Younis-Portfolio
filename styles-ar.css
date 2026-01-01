@@ -239,9 +239,9 @@ body.rtl {
     }
     
     .rtl .experience-badge {
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
+        left: auto;
+        right: -20px;
+        transform: none;
     }
     
     .rtl .section-header {
@@ -333,6 +333,13 @@ body.rtl {
     .rtl .footer-services {
         text-align: center;
     }
+    
+    /* Experience Badge RTL Mobile */
+    .rtl .experience-badge {
+        left: auto;
+        right: -15px;
+        transform: none;
+    }
 }
 
 /* Small Mobile RTL */
@@ -366,6 +373,13 @@ body.rtl {
     .rtl .studio-feature {
         flex-direction: row-reverse;
         justify-content: center;
+    }
+    
+    /* Experience Badge RTL Small Mobile */
+    .rtl .experience-badge {
+        left: auto;
+        right: -10px;
+        transform: none;
     }
 }
 
