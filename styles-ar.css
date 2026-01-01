@@ -249,7 +249,7 @@ body.rtl {
     }
 }
 
-/* Mobile RTL */
+/* Mobile RTL Medium */
 @media (max-width: 768px) {
     /* Navigation RTL Mobile */
     .rtl .navbar {
