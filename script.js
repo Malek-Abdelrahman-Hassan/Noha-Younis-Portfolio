@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initContactForm();
     initDemoFilters();
     initScriptToggles();
+    initMusicToggle();
     checkFormSuccess();
 });
 
@@ -111,20 +112,36 @@ function initMobileMenu() {
 // ===================================
 // Audio Players
 // ===================================
+let audioPlayerInstances = []; // Store all audio player data globally
+let currentAudioMode = 'music'; // 'clear' or 'music' - default is music
+
 function initAudioPlayers() {
     const audioPlayers = document.querySelectorAll('.audio-player');
     let currentAudio = null;
     let currentPlayBtn = null;
     
-    audioPlayers.forEach(player => {
+    audioPlayers.forEach((player, index) => {
         const playBtn = player.querySelector('.play-btn');
         const progressContainer = player.querySelector('.progress-container');
         const progressBar = player.querySelector('.progress-bar');
         const durationDisplay = player.querySelector('.duration');
-        const audioSrc = player.getAttribute('data-src');
+        const audioSrcClear = player.getAttribute('data-src');
+        const audioSrcMusic = player.getAttribute('data-src-music');
         
-        // Create audio element
-        const audio = new Audio(audioSrc);
+        // Create audio element with current mode (default is music)
+        let audio = new Audio(audioSrcMusic || audioSrcClear);
+        
+        // Store instance for later switching
+        audioPlayerInstances[index] = {
+            player,
+            playBtn,
+            progressContainer,
+            progressBar,
+            durationDisplay,
+            audioSrcClear,
+            audioSrcMusic,
+            audio
+        };
         
         // Load audio metadata
         audio.addEventListener('loadedmetadata', function() {
@@ -133,30 +150,32 @@ function initAudioPlayers() {
         
         // Handle audio loading errors
         audio.addEventListener('error', function(e) {
-            console.log('Audio loading error for:', audioSrc);
+            console.log('Audio loading error');
             durationDisplay.textContent = '--:--';
         });
         
         // Play/Pause functionality
         playBtn.addEventListener('click', function() {
-            if (currentAudio && currentAudio !== audio) {
-                // Pause previously playing audio
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-                if (currentPlayBtn) {
-                    currentPlayBtn.innerHTML = '<i class="fas fa-play"></i>';
-                    currentPlayBtn.classList.remove('playing');
-                }
-            }
+            const instance = audioPlayerInstances[index];
+            const currentAudioEl = instance.audio;
             
-            if (audio.paused) {
-                audio.play().catch(e => console.log('Playback failed:', e));
+            // Stop any other playing audio
+            audioPlayerInstances.forEach((inst, i) => {
+                if (i !== index && inst.audio && !inst.audio.paused) {
+                    inst.audio.pause();
+                    inst.audio.currentTime = 0;
+                    inst.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    inst.playBtn.classList.remove('playing');
+                    inst.progressBar.style.width = '0%';
+                }
+            });
+            
+            if (currentAudioEl.paused) {
+                currentAudioEl.play().catch(e => console.log('Playback failed:', e));
                 playBtn.innerHTML = '<i class="fas fa-pause"></i>';
                 playBtn.classList.add('playing');
-                currentAudio = audio;
-                currentPlayBtn = playBtn;
             } else {
-                audio.pause();
+                currentAudioEl.pause();
                 playBtn.innerHTML = '<i class="fas fa-play"></i>';
                 playBtn.classList.remove('playing');
             }
@@ -179,19 +198,87 @@ function initAudioPlayers() {
         
         // Click on progress bar to seek
         progressContainer.addEventListener('click', function(e) {
+            const instance = audioPlayerInstances[index];
             const rect = progressContainer.getBoundingClientRect();
             const clickPosition = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = clickPosition * audio.duration;
+            instance.audio.currentTime = clickPosition * instance.audio.duration;
         });
     });
+}
+
+// Format time helper
+function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return mins + ':' + (secs < 10 ? '0' : '') + secs;
+}
+
+// ===================================
+// Music Toggle (Clear Voice / With Music)
+// ===================================
+function initMusicToggle() {
+    const musicBtns = document.querySelectorAll('.music-btn');
     
-    // Format time helper
-    function formatTime(seconds) {
-        if (isNaN(seconds)) return '0:00';
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return mins + ':' + (secs < 10 ? '0' : '') + secs;
-    }
+    musicBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const mode = this.getAttribute('data-mode');
+            
+            if (mode === currentAudioMode) return; // Already active
+            
+            // Update active button
+            musicBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update audio mode
+            currentAudioMode = mode;
+            
+            // Switch all audio sources
+            audioPlayerInstances.forEach(instance => {
+                // Stop current audio if playing
+                if (instance.audio && !instance.audio.paused) {
+                    instance.audio.pause();
+                    instance.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    instance.playBtn.classList.remove('playing');
+                }
+                
+                // Get new source
+                const newSrc = mode === 'music' ? instance.audioSrcMusic : instance.audioSrcClear;
+                
+                // Create new audio with new source
+                const newAudio = new Audio(newSrc);
+                
+                // Copy event listeners
+                newAudio.addEventListener('loadedmetadata', function() {
+                    instance.durationDisplay.textContent = formatTime(newAudio.duration);
+                });
+                
+                newAudio.addEventListener('timeupdate', function() {
+                    const progress = (newAudio.currentTime / newAudio.duration) * 100;
+                    instance.progressBar.style.width = progress + '%';
+                    instance.durationDisplay.textContent = formatTime(newAudio.currentTime);
+                });
+                
+                newAudio.addEventListener('ended', function() {
+                    instance.playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    instance.playBtn.classList.remove('playing');
+                    instance.progressBar.style.width = '0%';
+                    instance.durationDisplay.textContent = formatTime(newAudio.duration);
+                });
+                
+                newAudio.addEventListener('error', function() {
+                    instance.durationDisplay.textContent = '--:--';
+                });
+                
+                // Reset progress bar
+                instance.progressBar.style.width = '0%';
+                instance.durationDisplay.textContent = '0:00';
+                
+                // Update instance
+                instance.audio = newAudio;
+            });
+        });
+    });
 }
 
 // ===================================

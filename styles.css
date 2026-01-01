@@ -531,6 +531,59 @@ img {
     border-color: transparent;
 }
 
+/* Music Toggle */
+.music-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.music-toggle-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-dark);
+}
+
+.music-toggle {
+    display: flex;
+    background: var(--white);
+    border-radius: 30px;
+    padding: 5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.music-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-dark);
+    background: transparent;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.music-btn:hover {
+    color: var(--primary);
+}
+
+.music-btn.active {
+    background: var(--gradient-primary);
+    color: var(--white);
+}
+
+.music-btn i {
+    font-size: 14px;
+}
+
 .demos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -656,7 +709,10 @@ img {
 .script-content.show {
     display: block;
     animation: fadeIn 0.3s ease;
+    max-height: 120px;
+    overflow-y: auto;
 }
+
 
 .script-content p {
     font-size: 13px;
@@ -664,6 +720,25 @@ img {
     line-height: 1.6;
     margin: 0;
     font-style: italic;
+}
+
+/* Custom scrollbar for script content */
+.script-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.script-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.script-content::-webkit-scrollbar-thumb {
+    background: var(--primary-light);
+    border-radius: 3px;
+}
+
+.script-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
 }
 
 @keyframes fadeIn {
@@ -1428,6 +1503,16 @@ img {
         font-size: 13px;
         flex: 1;
         min-width: 100px;
+    }
+    
+    .music-toggle-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .music-btn {
+        padding: 8px 16px;
+        font-size: 13px;
     }
     
     .demos-grid {

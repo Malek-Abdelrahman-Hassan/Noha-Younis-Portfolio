@@ -20,8 +20,12 @@ body.rtl {
 }
 
 /* Navigation RTL */
+.rtl .navbar {
+    direction: ltr; /* Keep navbar LTR for proper centering */
+}
+
 .rtl .nav-container {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 .rtl .nav-links {
@@ -31,6 +35,11 @@ body.rtl {
 .rtl .nav-link::after {
     left: auto;
     right: 0;
+}
+
+.rtl .cta-button {
+    margin-right: 0;
+    margin-left: 0;
 }
 
 /* Hero RTL */
@@ -53,7 +62,6 @@ body.rtl {
 
 /* Demo Cards RTL */
 .rtl .demo-card {
-    flex-direction: row-reverse;
     text-align: right;
 }
 
@@ -73,6 +81,19 @@ body.rtl {
 .rtl .script-toggle i {
     margin-left: 8px;
     margin-right: 0;
+}
+
+/* Script Content RTL */
+.rtl .script-content {
+    border-left: none;
+    border-right: 3px solid var(--primary);
+    text-align: right;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.rtl .script-content p {
+    direction: rtl;
 }
 
 /* About RTL */
@@ -128,17 +149,11 @@ body.rtl {
 }
 
 .rtl .contact-item {
-    flex-direction: row-reverse;
     text-align: right;
 }
 
 .rtl .contact-item div {
     text-align: right;
-}
-
-.rtl .contact-icon {
-    margin-left: 20px;
-    margin-right: 0;
 }
 
 .rtl .social-links {
@@ -236,16 +251,43 @@ body.rtl {
 
 /* Mobile RTL */
 @media (max-width: 768px) {
-    .rtl .mobile-menu-btn {
-        order: -1;
+    /* Navigation RTL Mobile */
+    .rtl .navbar {
+        direction: ltr;
     }
     
+    .rtl .nav-container {
+        direction: rtl;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    /* Mobile Menu Dropdown RTL */
     .rtl .nav-links.active {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background: var(--primary-dark);
+        padding: 20px;
+        gap: 0;
         text-align: right;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
     
     .rtl .nav-links.active .nav-link {
         text-align: right;
+        display: block;
+        width: 100%;
+        padding: 18px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .rtl .nav-links.active .nav-link::after {
+        display: none;
     }
     
     /* Language Toggle RTL Mobile */
@@ -254,24 +296,27 @@ body.rtl {
         left: 65px;
     }
     
+    /* Music Toggle RTL */
+    .rtl .music-toggle-container {
+        flex-direction: column;
+    }
+    
+    .rtl .music-btn {
+        flex-direction: row-reverse;
+    }
+    
     /* Demo Cards RTL Mobile */
     .rtl .demo-card {
-        flex-direction: row-reverse;
         text-align: right;
     }
     
     .rtl .demo-header {
-        align-items: flex-end;
+        flex-direction: row-reverse;
     }
     
     /* Contact RTL Mobile */
     .rtl .contact-item {
-        flex-direction: row-reverse;
-    }
-    
-    .rtl .contact-icon {
-        margin-left: 0;
-        margin-right: 0;
+        text-align: right;
     }
     
     .rtl .social-links {
@@ -292,6 +337,12 @@ body.rtl {
 
 /* Small Mobile RTL */
 @media (max-width: 480px) {
+    .rtl .nav-container {
+        direction: rtl;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
     .rtl .demo-card {
         flex-direction: column;
         text-align: center;
@@ -309,6 +360,7 @@ body.rtl {
     
     .rtl .language-toggle {
         left: 60px;
+        right: auto;
     }
     
     .rtl .studio-feature {
